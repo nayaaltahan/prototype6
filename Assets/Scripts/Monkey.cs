@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
 
-public class Monkey : MonoBehaviour, IXAccelerator
+public class Monkey : NetworkBehaviour, IXAccelerator
 {
     public float monkeyMove = 0.1f;
 
@@ -21,9 +22,28 @@ public class Monkey : MonoBehaviour, IXAccelerator
     public SpriteRenderer monsprite;
     public Animator monanim;
 
+    public bool isMonkey = false;
+    
+
     void Update()
     {
-        float accChange = Input.GetAxis("Horizontal");
+        
+        if (Information.type == Type.Monkey || Information.type == Type.Server)
+        {
+            isMonkey = true;
+        }
+        
+        float accChange = 0;
+        
+        if (isMonkey)
+        {
+            accChange = Input.GetAxis("Horizontal");
+            float tilt = Input.acceleration.x;
+            if ( tilt != 0)
+            {
+                accChange = Input.acceleration.x;
+            }
+        }
 
         monkeyPosition += accChange * monkeyMove;
 

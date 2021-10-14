@@ -72,12 +72,29 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.collab-proxy": {
-      "version": "1.7.1",
-      "depth": 0,
+    "com.unity.burst": {
+      "version": "1.5.5",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0"
+        "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.collab-proxy": {
+      "version": "1.11.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.collections": {
+      "version": "1.0.0-pre.5",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.burst": "1.5.4",
+        "com.unity.test-framework": "1.1.22"
       },
       "url": "https://packages.unity.com"
     },
@@ -107,14 +124,14 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {
-      "version": "1.2.3",
+      "version": "1.2.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.mathematics": {
-      "version": "1.1.0",
+      "version": "1.2.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -138,15 +155,8 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.nuget.newtonsoft-json": {
-      "version": "2.0.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.test-framework": {
-      "version": "1.1.27",
+      "version": "1.1.29",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -176,6 +186,17 @@
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.transport": {
+      "version": "https://github.com/needle-mirror/com.unity.transport.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.collections": "1.0.0-pre.5",
+        "com.unity.burst": "1.5.5",
+        "com.unity.mathematics": "1.2.1"
+      },
+      "hash": "cbfac882cb97d07b488197b4e65b6da0927608fa"
     },
     "com.unity.ugui": {
       "version": "1.0.0",
