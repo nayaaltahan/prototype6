@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using MLAPI;
+using MLAPI.NetworkVariable;
+using UnityEngine;
 
 public class Elephant : NetworkBehaviour, IYAccelerator
 {
@@ -12,10 +13,10 @@ public class Elephant : NetworkBehaviour, IYAccelerator
 
     public float delay = 0.1f;
     private float timer = 0;
+    
+    [SerializeField] public NetworkVariable<float> ElephantVariable = new NetworkVariable<float>();
 
-    float acc = 0;
-
-    public float YAcceleration => acc;
+    public float YAcceleration => ElephantVariable.Value;
 
     public bool isElephant = false;
     
@@ -33,6 +34,9 @@ public class Elephant : NetworkBehaviour, IYAccelerator
 
     private void Start()
     {
+        ElephantVariable.Settings.WritePermission = NetworkVariablePermission.ServerOnly;
+        ElephantVariable.Settings.ReadPermission = NetworkVariablePermission.Everyone;
+
         lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
@@ -54,17 +58,16 @@ public class Elephant : NetworkBehaviour, IYAccelerator
         {
             if (Input.GetKeyDown(KeyCode.Space) || deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
             {
-                acc += adder;
+                ElephantVariable.Value += adder;
                 timer = 0;
             }
-        }
-        
+            if (timer > delay)
+            {
+                ElephantVariable.Value -= changeOverTime * Time.deltaTime;
+            }
 
-        if (timer > delay)
-        {
-            acc -= changeOverTime * Time.deltaTime;
+            ElephantVariable.Value=Mathf.Clamp01(ElephantVariable.Value);
         }
 
-        acc=Mathf.Clamp01(acc);
     }
 }

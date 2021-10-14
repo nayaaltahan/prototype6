@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
+using MLAPI.NetworkVariable;
 
 public class Monkey : NetworkBehaviour, IXAccelerator
 {
@@ -24,28 +25,38 @@ public class Monkey : NetworkBehaviour, IXAccelerator
 
     public bool isMonkey = false;
     
+    [SerializeField] public NetworkVariable<float> MonkeyVariable = new NetworkVariable<float>();
+
+    private void Start()
+    {
+        MonkeyVariable.Settings.WritePermission = NetworkVariablePermission.OwnerOnly;
+        MonkeyVariable.Settings.ReadPermission = NetworkVariablePermission.Everyone;
+    }
 
     void Update()
     {
-        
-        if (Information.type == Type.Monkey || Information.type == Type.Server)
+        if (Information.type == Type.Monkey)
         {
             isMonkey = true;
         }
-        
-        float accChange = 0;
-        
+
         if (isMonkey)
         {
-            accChange = Input.GetAxis("Horizontal");
+            MonkeyVariable.Value = 0;
+            MonkeyVariable.Value = Input.GetAxis("Horizontal");
             float tilt = Input.acceleration.x;
             if ( tilt != 0)
             {
-                accChange = Input.acceleration.x;
+                MonkeyVariable.Value = Input.acceleration.x;
             }
         }
+        
+        if (!isMonkey)
+        {
+            Debug.Log(MonkeyVariable.Value);
+        }
 
-        monkeyPosition += accChange * monkeyMove;
+        monkeyPosition += MonkeyVariable.Value * monkeyMove;
 
         monkeyPosition = Mathf.Clamp(monkeyPosition, -1, 1);
 
